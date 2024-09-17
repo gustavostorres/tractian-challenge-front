@@ -1,6 +1,10 @@
 import styled, { css } from 'styled-components';
 import { CiBoxes } from 'react-icons/ci';
 
+interface isHighlighted {
+  isSelected: boolean;
+}
+
 export const HeaderContainer = styled.div`
   display: flex;
   background-color: #17192D;
@@ -19,20 +23,16 @@ export const TextContainer = styled.div`
   justify-content: flex-end;
 `;
 
-export const BorderText = styled.span<{ isHighlighted: boolean }>`
+export const BorderText = styled.span<isHighlighted>`
+  display: flex;
   align-items: center;
   padding: 0.3rem 0.5rem;
   border-radius: 0.3rem;
-  background-color: #023B78;
-  color: white;
+  background-color: ${props => (props.isSelected ? '#2188FF' : '#023B78')};
+  color: ${props => (props.isSelected ? 'white' : 'black')};
   font-size: 0.8rem;
   margin-right: 1rem;
-
-  ${(props) =>
-    props.isHighlighted &&
-    css`
-      background-color: #2188FF;
-    `}
+  cursor: pointer;
 `;
 
 export const Icon = styled(CiBoxes)`

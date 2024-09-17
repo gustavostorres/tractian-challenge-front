@@ -38,7 +38,7 @@ export function Header() {
                 {fetchCompanies.data?.map((company: Company) => (
                     <S.BorderText 
                         key={company.id}
-                        isHighlighted={company.name === highlightedCompany}
+                        isSelected={company.name === highlightedCompany}
                         onClick={() => setCompany({ name: company.name, id: company.id })}
                     >
                         <S.Icon />
