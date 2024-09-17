@@ -1,4 +1,4 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { CiBoxes } from 'react-icons/ci';
 
 interface isHighlighted {
