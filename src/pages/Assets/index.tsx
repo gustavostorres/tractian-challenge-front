@@ -61,51 +61,7 @@ export function Assets() {
                 </S.ContentWrapper>
             </S.Container>
         ) : (
-            <S.Container>
-                <S.ContentWrapper>
-                    <ImageComponent />
-
-                    <S.TextContainer>
-                        <S.TextRow>
-                            <S.Text>Tipo Equipamento</S.Text>
-                            <S.Text2>sem equipamento</S.Text2>
-                        </S.TextRow>
-
-                        <S.Separator />
-
-                        <S.TextRow>
-                            <S.Text>Responsáveis</S.Text>
-                            <S.Text2>
-                                sem responsáveis
-                            </S.Text2>
-                        </S.TextRow>
-                    </S.TextContainer>
-
-                    <S.TextContainer>
-                        <S.TextRow2>
-                            <S.Text>Sensor</S.Text>
-                            <S.Text>Receptor</S.Text>
-                        </S.TextRow2>
-
-                        <S.Separator />
-                        
-                        <S.TextRow2>
-                            <S.Text2>
-                                <MdOutlineSensors />
-                                {nodeContext.selectedNode && 'sensorId' in nodeContext.selectedNode 
-                                    ? ` ${(nodeContext.selectedNode as Asset).sensorId}`
-                                    : `  ${'sem sensor'}`}
-                            </S.Text2>
-                            <S.Text2>
-                                <LuRadioReceiver />
-                                {nodeContext.selectedNode && 'gatewayId' in nodeContext.selectedNode 
-                                    ? ` ${(nodeContext.selectedNode as Asset).gatewayId}`
-                                    : `  ${'sem receptor'}`}
-                            </S.Text2>
-                        </S.TextRow2>
-                    </S.TextContainer>
-                </S.ContentWrapper>
-            </S.Container>
+            <S.Container />
         )}
         </>
     );
