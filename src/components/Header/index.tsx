@@ -9,10 +9,17 @@ import { useEffect } from 'react';
 export function Header() {
     const { company, setCompany } = useCompany();
 
-    const fetchCompanies = useQuery<Company[]>(
-        ['company'],
-        () => getCompanies(),
-    );
+    // Check if companies data exists in localStorage
+    const storedCompanies = localStorage.getItem('companies');
+    const fetchCompanies = useQuery<Company[]>(['company'], () => {
+        if (storedCompanies) {
+            return JSON.parse(storedCompanies) as Company[];
+        }
+        return getCompanies().then(data => {
+            localStorage.setItem('companies', JSON.stringify(data));
+            return data;
+        });
+    });
 
     useEffect(() => {
         const savedCompany = localStorage.getItem('selectedCompany');

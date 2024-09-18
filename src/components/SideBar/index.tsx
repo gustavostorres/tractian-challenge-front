@@ -28,8 +28,29 @@ export function SideBar() {
         setSearchTerm(''); // Reset search term on company change
     }, [companyId, setSelectedNode]);
 
-    const fetchCompaniesLocations = useQuery<Location[]>(['locations', companyId], () => getCompanyLocations(companyId), { enabled: companyId.length > 0 });
-    const fetchCompaniesAssets = useQuery<Asset[]>(['assets', companyId], () => getCompanyAssets(companyId), { enabled: companyId.length > 0 });
+    const fetchCompaniesLocations = useQuery<Location[]>(['locations', companyId], () => {
+        // Check if data exists in localStorage
+        const storedLocations = localStorage.getItem(`locations_${companyId}`);
+        if (storedLocations) {
+            return JSON.parse(storedLocations) as Location[];
+        }
+        return getCompanyLocations(companyId).then(data => {
+            localStorage.setItem(`locations_${companyId}`, JSON.stringify(data));
+            return data;
+        });
+    }, { enabled: companyId.length > 0 });
+
+    const fetchCompaniesAssets = useQuery<Asset[]>(['assets', companyId], () => {
+        // Check if data exists in localStorage
+        const storedAssets = localStorage.getItem(`assets_${companyId}`);
+        if (storedAssets) {
+            return JSON.parse(storedAssets) as Asset[];
+        }
+        return getCompanyAssets(companyId).then(data => {
+            localStorage.setItem(`assets_${companyId}`, JSON.stringify(data));
+            return data;
+        });
+    }, { enabled: companyId.length > 0 });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const locations = fetchCompaniesLocations.data || [];
@@ -76,19 +97,19 @@ export function SideBar() {
             let statusIcon = null;
 
             if ('status' in node) {
-            const status = (node as Asset).status;
+                const status = (node as Asset).status;
 
-            switch (status) {
-                case 'operating':
-                statusIcon = <AiFillThunderbolt style={{ marginLeft: 8 }} />;
-                break;
-                case 'alert':
-                statusIcon = <AiOutlineAlert style={{ marginLeft: 8 }} />;
-                break;
-                default:
-                statusIcon = null;
-                break;
-            }
+                switch (status) {
+                    case 'operating':
+                        statusIcon = <AiFillThunderbolt style={{ marginLeft: 8 }} />;
+                        break;
+                    case 'alert':
+                        statusIcon = <AiOutlineAlert style={{ marginLeft: 8 }} />;
+                        break;
+                    default:
+                        statusIcon = null;
+                        break;
+                }
             }
     
             return (
