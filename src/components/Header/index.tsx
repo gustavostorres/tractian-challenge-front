@@ -15,10 +15,19 @@ export function Header() {
     );
 
     useEffect(() => {
-        if (fetchCompanies.data && !company.name) {
+        const savedCompany = localStorage.getItem('selectedCompany');
+        if (savedCompany && !company.name) {
+            setCompany(JSON.parse(savedCompany));
+        } else if (fetchCompanies.data && !company.name) {
             setCompany({ name: fetchCompanies.data[0].name, id: fetchCompanies.data[0].id });
         }
     }, [fetchCompanies.data, company.name, setCompany]);
+
+    useEffect(() => {
+        if (company.name) {
+            localStorage.setItem('selectedCompany', JSON.stringify(company));
+        }
+    }, [company]);
 
     if (fetchCompanies.isLoading) {
         return <div>Loading...</div>;
