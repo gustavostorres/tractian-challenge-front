@@ -1,57 +1,26 @@
 import * as S from './styles';
 import logoImg from '../../assets/LOGO_TRACTIAN.svg';
-import { useQuery } from 'react-query';
-import { getCompanies } from '../../services/queries/Company';
-import { Company } from '../../types/Company';
 import { useCompany } from '../../contexts/CompanyContext';
-import { useEffect } from 'react';
 
 export function Header() {
-    const { company, setCompany } = useCompany();
+    const { company, setCompany, companies, isLoading, error } = useCompany();
 
-    // Check if companies data exists in localStorage
-    const storedCompanies = localStorage.getItem('companies');
-    const fetchCompanies = useQuery<Company[]>(['company'], () => {
-        if (storedCompanies) {
-            return JSON.parse(storedCompanies) as Company[];
-        }
-        return getCompanies().then(data => {
-            localStorage.setItem('companies', JSON.stringify(data));
-            return data;
-        });
-    });
-
-    useEffect(() => {
-        const savedCompany = localStorage.getItem('selectedCompany');
-        if (savedCompany && !company.name) {
-            setCompany(JSON.parse(savedCompany));
-        } else if (fetchCompanies.data && !company.name) {
-            setCompany({ name: fetchCompanies.data[0].name, id: fetchCompanies.data[0].id });
-        }
-    }, [fetchCompanies.data, company.name, setCompany]);
-
-    useEffect(() => {
-        if (company.name) {
-            localStorage.setItem('selectedCompany', JSON.stringify(company));
-        }
-    }, [company]);
-
-    if (fetchCompanies.isLoading) {
+    if (isLoading) {
         return <div>Loading...</div>;
     }
 
-    if (fetchCompanies.error) {
+    if (error) {
         return <div>Error loading companies</div>;
     }
 
-    const highlightedCompany = company.name || (fetchCompanies.data && fetchCompanies.data[0].name);
+    const highlightedCompany = company.name || (companies && companies[0].name);
 
     return (
         <S.HeaderContainer>
             <S.Logo src={logoImg} alt="TRACTIAN Logo" />
 
             <S.TextContainer>
-                {fetchCompanies.data?.map((company: Company) => (
+                {companies?.map((company) => (
                     <S.BorderText 
                         key={company.id}
                         isSelected={company.name === highlightedCompany}
