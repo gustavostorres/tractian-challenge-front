@@ -10,11 +10,6 @@ interface CompanyState {
     id: string;
 }
 
-const initialCompanyState: CompanyState = {
-    name: '',
-    id: ''
-};
-
 interface CompanyContextProps {
     company: CompanyState;
     setCompany: (company: CompanyState) => void;
@@ -23,9 +18,22 @@ interface CompanyContextProps {
     error: any;
     assets: Asset[] | undefined;
     locations: Location[] | undefined;
+    selectedNode: Asset | Location | null;
+    setSelectedNode: (node: Asset | Location | null) => void;
 }
 
-export const CompanyContext = createContext<CompanyContextProps | undefined>(undefined);
+// Inicializando um valor padrão para o contexto
+export const CompanyContext = createContext<CompanyContextProps>({
+    company: { name: '', id: '' },
+    setCompany: () => {},
+    companies: [],
+    isLoading: false,
+    error: null,
+    assets: [],
+    locations: [],
+    selectedNode: null,
+    setSelectedNode: () => {},
+});
 
 export const useCompany = () => {
     const context = useContext(CompanyContext);
@@ -36,7 +44,8 @@ export const useCompany = () => {
 };
 
 export const CompanyProvider = ({ children }: { children: ReactNode }) => {
-    const [company, setCompany] = useState<CompanyState>(initialCompanyState);
+    const [company, setCompany] = useState<CompanyState>({ name: '', id: '' });
+    const [selectedNode, setSelectedNode] = useState<Asset | Location | null>(null);
 
     // Fetch companies and store them in localStorage if not cached
     const storedCompanies = localStorage.getItem('companies');
@@ -102,7 +111,19 @@ export const CompanyProvider = ({ children }: { children: ReactNode }) => {
     }, [company]);
 
     return (
-        <CompanyContext.Provider value={{ company, setCompany, companies, isLoading, error, assets, locations }}>
+        <CompanyContext.Provider
+            value={{
+                company,
+                setCompany,
+                companies,
+                isLoading,
+                error,
+                assets,
+                locations,
+                selectedNode,
+                setSelectedNode,
+            }}
+        >
             {children}
         </CompanyContext.Provider>
     );

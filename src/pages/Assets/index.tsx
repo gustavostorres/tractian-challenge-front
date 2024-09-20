@@ -4,18 +4,17 @@ import { TbCircleLetterMFilled } from "react-icons/tb";
 import { MdOutlineSensors } from "react-icons/md";
 import { LuRadioReceiver } from "react-icons/lu";
 import motorImage from '../../assets/image 223 1 2.png';
-import { useContext } from 'react';
-import { NodeContext } from '../../contexts/NodeContext';
 import { Asset } from '../../types/Assets';
+import { useCompany } from '../../contexts/CompanyContext';
 
 export function Assets() {
-    const nodeContext = useContext(NodeContext);
+    const { selectedNode } = useCompany();
 
     return (
         <>
-        {nodeContext.selectedNode !== null ? (
+        {selectedNode !== null ? (
             <S.Container>
-                <S.Title>{nodeContext.selectedNode?.name}</S.Title>
+                <S.Title>{selectedNode?.name}</S.Title>
                 <S.ContentWrapper>
                     <ImageComponent src={motorImage} alt='testando' />
 
@@ -46,14 +45,14 @@ export function Assets() {
                     <S.TextRow2>
                         <S.Text2>
                         <MdOutlineSensors />
-                        {nodeContext.selectedNode && 'sensorId' in nodeContext.selectedNode
-                            ? ` ${(nodeContext.selectedNode as Asset).sensorId}`
+                        {selectedNode && 'sensorId' in selectedNode
+                            ? ` ${(selectedNode as Asset).sensorId}`
                             : `sem sensor`}
                         </S.Text2>
                         <S.Text2>
                         <LuRadioReceiver />
-                        {nodeContext.selectedNode && 'gatewayId' in nodeContext.selectedNode
-                            ? ` ${(nodeContext.selectedNode as Asset).gatewayId}`
+                        {selectedNode && 'gatewayId' in selectedNode
+                            ? ` ${(selectedNode as Asset).gatewayId}`
                             : `sem receptor`}
                         </S.Text2>
                     </S.TextRow2>

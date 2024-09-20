@@ -1,12 +1,12 @@
 import { Asset } from "../types/Assets";
 import { Location } from "../types/Locations"
 
-export const buildTree = (locations: Location[], assets: Asset[]): Location[] => {
-    const locationMap = new Map<string, Location>(locations.map(loc => [loc.id, { ...loc, children: [] }]));
+export const buildTree = (locations: Location[] | undefined, assets: Asset[] | undefined): Location[] => {
+    const locationMap = new Map<string, Location>(locations?.map(loc => [loc.id, { ...loc, children: [] }]));
 
     const tree: Location[] = [];
 
-    locations.forEach(loc => {
+    locations?.forEach(loc => {
         if (loc.parentId) {
             const parent = locationMap.get(loc.parentId);
             if (parent) {
@@ -17,7 +17,7 @@ export const buildTree = (locations: Location[], assets: Asset[]): Location[] =>
         }
     });
 
-    assets.forEach(asset => {
+    assets?.forEach(asset => {
         if (asset.locationId) {
             const location = locationMap.get(asset.locationId);
             if (location) {

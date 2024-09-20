@@ -1,9 +1,6 @@
-import { useState, useContext, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import * as S from './styles';
-import { CompanyContext } from '../../contexts/CompanyContext';
-import { useNode } from '../../contexts/NodeContext';
-import { getCompanyAssets, getCompanyLocations } from '../../services/queries/Company';
-import { useQuery } from 'react-query';
+import { useCompany } from '../../contexts/CompanyContext';
 import { Asset } from '../../types/Assets';
 import { Location } from '../../types/Locations';
 import { buildTree, filterTree } from '../../utils/BuildTree';
@@ -15,9 +12,8 @@ import { TreeItem, TreeImage, ExpandIcon } from './styles';
 import { AiFillThunderbolt, AiOutlineAlert } from 'react-icons/ai';
 
 export function SideBar() {
-    const companyContext = useContext(CompanyContext);
-    const { selectedNode, setSelectedNode } = useNode();
-    const companyId = companyContext?.company?.id || '';
+    const { company, assets, locations, selectedNode, setSelectedNode } = useCompany();
+    const companyId = company?.id || '';
 
     const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
     const [filteredTree, setFilteredTree] = useState<(Location | Asset)[]>([]);
@@ -28,34 +24,6 @@ export function SideBar() {
         setSearchTerm(''); // Reset search term on company change
     }, [companyId, setSelectedNode]);
 
-    const fetchCompaniesLocations = useQuery<Location[]>(['locations', companyId], () => {
-        // Check if data exists in localStorage
-        const storedLocations = localStorage.getItem(`locations_${companyId}`);
-        if (storedLocations) {
-            return JSON.parse(storedLocations) as Location[];
-        }
-        return getCompanyLocations(companyId).then(data => {
-            localStorage.setItem(`locations_${companyId}`, JSON.stringify(data));
-            return data;
-        });
-    }, { enabled: companyId.length > 0 });
-
-    const fetchCompaniesAssets = useQuery<Asset[]>(['assets', companyId], () => {
-        // Check if data exists in localStorage
-        const storedAssets = localStorage.getItem(`assets_${companyId}`);
-        if (storedAssets) {
-            return JSON.parse(storedAssets) as Asset[];
-        }
-        return getCompanyAssets(companyId).then(data => {
-            localStorage.setItem(`assets_${companyId}`, JSON.stringify(data));
-            return data;
-        });
-    }, { enabled: companyId.length > 0 });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const locations = fetchCompaniesLocations.data || [];
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const assets = fetchCompaniesAssets.data || [];
 
     const tree = useMemo(() => buildTree(locations, assets), [locations, assets]);
 

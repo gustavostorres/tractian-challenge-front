@@ -1,18 +1,15 @@
-import { useContext } from 'react';
 import { Header } from '../components/Header';
 import { SideBar } from '../components/SideBar';
 import { Assets } from './Assets';
 import * as S from './styles';
-import { CompanyContext } from '../contexts/CompanyContext';
-import { NodeContext } from '../contexts/NodeContext';
 import { Asset } from '../types/Assets';
+import { useCompany } from '../contexts/CompanyContext';
 
 export function HomeApp() {
-    const companyContext = useContext(CompanyContext);
-    const nodeContext = useContext(NodeContext)
+    const { company, selectedNode } = useCompany();
 
-    const status = nodeContext.selectedNode && 'status' in nodeContext.selectedNode
-    ? (nodeContext.selectedNode as Asset).status : null;
+    const status = selectedNode && 'status' in selectedNode
+    ? (selectedNode as Asset).status : null;
     
   return (
     <>
@@ -20,7 +17,7 @@ export function HomeApp() {
         <S.Container>
             <S.Row>
                 <div>
-                <S.BoldText>Ativos</S.BoldText> / <S.SecundaryText>{companyContext?.company.name} Unit</S.SecundaryText>
+                <S.BoldText>Ativos</S.BoldText> / <S.SecundaryText>{company.name} Unit</S.SecundaryText>
                 </div>
 
                 <div>
