@@ -13,7 +13,7 @@ import { AiFillThunderbolt, AiOutlineAlert } from 'react-icons/ai';
 
 export function SideBar() {
     const { company, assets, locations, selectedNode, setSelectedNode } = useCompany();
-    const companyId = company?.id || '';
+    const companyId = company?.id;
 
     const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
     const [filteredTree, setFilteredTree] = useState<(Location | Asset)[]>([]);
