@@ -22,7 +22,6 @@ interface CompanyContextProps {
     setSelectedNode: (node: Asset | Location | null) => void;
 }
 
-// Inicializando um valor padrão para o contexto
 export const CompanyContext = createContext<CompanyContextProps>({
     company: { name: '', id: '' },
     setCompany: () => {},
@@ -39,7 +38,6 @@ export const CompanyProvider = ({ children }: { children: ReactNode }) => {
     const [company, setCompany] = useState<CompanyState>({ name: '', id: '' });
     const [selectedNode, setSelectedNode] = useState<Asset | Location | null>(null);
 
-    // Fetch companies and store them in localStorage if not cached
     const storedCompanies = localStorage.getItem('companies');
     const { data: companies, isLoading, error } = useQuery<Company[]>(
         ['company'],
@@ -54,7 +52,6 @@ export const CompanyProvider = ({ children }: { children: ReactNode }) => {
         }
     );
 
-    // Fetch company locations and assets based on selected company
     const { data: locations } = useQuery<Location[]>(
         ['locations', company.id],
         () => {
@@ -85,7 +82,6 @@ export const CompanyProvider = ({ children }: { children: ReactNode }) => {
         { enabled: !!company.id }
     );
 
-    // Set company from localStorage or default to the first company
     useEffect(() => {
         const savedCompany = localStorage.getItem('selectedCompany');
         if (savedCompany && !company.name) {
