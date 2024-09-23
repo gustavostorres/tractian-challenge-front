@@ -1,6 +1,6 @@
 import * as S from './styles';
 import logoImg from '../../assets/LOGO_TRACTIAN.svg';
-import { useCompany } from '../../contexts/CompanyContext';
+import { useCompany } from '../../hooks/useCompany';
 
 export function Header() {
     const { company, setCompany, companies, isLoading, error } = useCompany();

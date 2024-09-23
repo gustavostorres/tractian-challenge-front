@@ -5,7 +5,7 @@ import { MdOutlineSensors } from "react-icons/md";
 import { LuRadioReceiver } from "react-icons/lu";
 import motorImage from '../../assets/image 223 1 2.png';
 import { Asset } from '../../types/Assets';
-import { useCompany } from '../../contexts/CompanyContext';
+import { useCompany } from '../../hooks/useCompany';
 
 export function Assets() {
     const { selectedNode } = useCompany();

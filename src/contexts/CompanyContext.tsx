@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useState, useEffect, ReactNode } from 'react';
 import { useQuery } from 'react-query';
 import { getCompanies, getCompanyAssets, getCompanyLocations } from '../services/queries/Company';
 import { Company } from '../types/Company';
@@ -34,14 +34,6 @@ export const CompanyContext = createContext<CompanyContextProps>({
     selectedNode: null,
     setSelectedNode: () => {},
 });
-
-export const useCompany = () => {
-    const context = useContext(CompanyContext);
-    if (!context) {
-        throw new Error('useCompany must be used within a CompanyProvider');
-    }
-    return context;
-};
 
 export const CompanyProvider = ({ children }: { children: ReactNode }) => {
     const [company, setCompany] = useState<CompanyState>({ name: '', id: '' });

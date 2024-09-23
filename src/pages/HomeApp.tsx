@@ -3,7 +3,7 @@ import { SideBar } from '../components/SideBar';
 import { Assets } from './Assets';
 import * as S from './styles';
 import { Asset } from '../types/Assets';
-import { useCompany } from '../contexts/CompanyContext';
+import { useCompany } from '../hooks/useCompany';
 
 export function HomeApp() {
     const { company, selectedNode } = useCompany();

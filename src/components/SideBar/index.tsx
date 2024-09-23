@@ -1,6 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
 import * as S from './styles';
-import { useCompany } from '../../contexts/CompanyContext';
 import { Asset } from '../../types/Assets';
 import { Location } from '../../types/Locations';
 import { buildTree, filterTree } from '../../utils/BuildTree';
@@ -10,6 +9,7 @@ import location from '../../assets/location.png';
 import { Filter } from '../filter';
 import { TreeItem, TreeImage, ExpandIcon } from './styles';
 import { AiFillThunderbolt, AiOutlineAlert } from 'react-icons/ai';
+import { useCompany } from '../../hooks/useCompany';
 
 export function SideBar() {
     const { company, assets, locations, selectedNode, setSelectedNode } = useCompany();
